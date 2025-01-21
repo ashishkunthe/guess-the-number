@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     marginBottom: 12, // Added space between title and input field
   },
   enterText: {
+    fontFamily: "open-sans",
     fontSize: 18,
     color: Colors.accent500,
     marginBottom: 12, // Added space before the number input

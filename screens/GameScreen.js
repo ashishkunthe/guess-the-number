@@ -1,6 +1,7 @@
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
 import { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import Colors from "../constant/colors";
 
 import NumberContainer from "../components/game/NumberContainer";
 import Title from "../components/ui/Title";
@@ -23,6 +24,7 @@ let maxBoundary = 100;
 function GameScreen({ userNumber, onGameOver }) {
   const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+  const [guessRounds, setGuessRounds] = useState([initialGuess]);
 
   useEffect(() => {
     if (currentGuess == userNumber) {
@@ -53,6 +55,7 @@ function GameScreen({ userNumber, onGameOver }) {
       currentGuess
     );
     setCurrentGuess(newRndNumber);
+    setGuessRounds((prevGuessNummbers) => [newRndNumber, ...prevGuessNummbers]);
   }
 
   return (
@@ -74,6 +77,19 @@ function GameScreen({ userNumber, onGameOver }) {
           </View>
         </Card>
       </View>
+      <FlatList
+        data={guessRounds}
+        renderItem={({ item, index }) => (
+          <View style={styles.guessItem}>
+            <Text style={styles.roundText}>
+              Round {guessRounds.length - index}:
+            </Text>
+            <Text style={styles.guessText}>{item}</Text>
+          </View>
+        )}
+        contentContainerStyle={styles.guessRoundsContainer}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </View>
   );
 }
@@ -102,5 +118,38 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly", // This will equally space the buttons
     width: "100%", // Full width to use available space
     marginTop: 16,
+  },
+  guessRoundsContainer: {
+    marginTop: 20,
+    width: "80%",
+    alignItems: "center",
+    flexGrow: 1,
+  },
+  guessItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 12,
+    marginVertical: 6,
+    width: "100%",
+    backgroundColor: Colors.accent500,
+    borderRadius: 8,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    shadowColor: "#000", // iOS shadow
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2, // Android shadow
+  },
+  roundText: {
+    fontSize: 16,
+    color: "#555",
+    fontFamily: "open-sans-bold",
+  },
+  guessText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#222",
   },
 });
