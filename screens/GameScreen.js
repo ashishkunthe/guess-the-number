@@ -1,4 +1,11 @@
-import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../constant/colors";
@@ -96,27 +103,30 @@ function GameScreen({ userNumber, onGameOver }) {
 
 export default GameScreen;
 
+const deviceHeight = Dimensions.get("screen").height;
+
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 24,
     alignItems: "center",
+    marginTop: deviceHeight < 450 ? 0 : 60,
   },
   instructionText: {
     fontSize: 18,
-    marginVertical: 8,
+    marginVertical: deviceHeight < 450 ? 4 : 0,
     fontWeight: "bold",
     textAlign: "center",
   },
   controlsContainer: {
-    marginTop: 20,
+    marginTop: deviceHeight < 450 ? 15 : 20,
     width: "80%",
     alignItems: "center",
   },
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "space-evenly", // This will equally space the buttons
-    width: "100%", // Full width to use available space
+    width: "50%", // Full width to use available space
     marginTop: 16,
   },
   guessRoundsContainer: {
